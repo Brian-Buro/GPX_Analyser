@@ -13,3 +13,4 @@ file(GLOB srcFiles src/*.cpp)
 
 # Add executable
 add_executable(GPX_Analyser ${srcFiles})
+target_link_libraries(GPX_Analyser)
