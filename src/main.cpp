@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "File.h"
+#include "FileManager.h"
 
 int main() {
-    std::cout << "Hello Main!" << "\n";
 
-    File file("../sampleData/Walchensee.gpx"); 
-    file.checkFile();
+    FileManager fileMan;
+    fileMan.addFile("../sampleData/Walchensee.gpx"); 
+    fileMan.addFile("../sampleData/Walchensee2.gpx"); 
 
     return 0;
 }

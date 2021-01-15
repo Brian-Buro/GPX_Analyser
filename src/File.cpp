@@ -1,14 +1,28 @@
 #include <iostream>
-#include <filesystem>
 #include "File.h"
 
-void File::checkFile()
+bool File::isOK()
 {
-    if (std::filesystem::exists(_fileName))
+    fs::file_status status = fs::status(_path.string());
+    if (!fs::exists(status))
     {
-        std::cout << _fileName << " exists.\n";
-    } else
-    {
-        std::cout << _fileName << " does not exist.\n";
+        std::cout << _path << " does not exist.\n";
+        return false;
     }
+    if (_path.extension() != ".gpx")
+    {
+        std::cout << _path << " File extension is not gpx.\n";
+        return false;
+    }
+    if (fs::is_directory(status))
+    {
+        std::cout << _path << " Path is a directory, expected a file.\n";
+        return false;
+    }
+    return true;
+}
+
+void File::printPath()
+{
+    std::cout << "Path: " << _path << "\n";
 }
