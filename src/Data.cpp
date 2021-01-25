@@ -83,12 +83,12 @@ void GpxParser::_extractEle(std::shared_ptr<Trk> &trk)
 
 void GpxParser::_extractTime(std::shared_ptr<Trk> &trk)
 {
-    std::string time;
+    std::time_t time;
     std::smatch m;
     _regexExpression = ">(.+)<";
     if (std::regex_search(_line, m, _regexExpression))
     {
-        time = m[1].str();
+        time = parseTime(m[1].str().c_str());
     }
     trk->time.push_back(time);
 }
@@ -128,6 +128,56 @@ void GpxParser::getTracks(std::vector<std::shared_ptr<Trk>> &tracks)
 {
     tracks = _tracks;
 }
+std::time_t GpxParser::parseTime(const char *time)
+{
+    /* 2020-04-12T12:52:18Z */
+    struct tm timeStruct
+    {
+        0
+    };
+    int y, mon, d, h, min, s;
+    sscanf(time, "%4d-%2d-%2dT%2d:%2d:%2dZ", &y, &mon, &d, &h, &min, &s);
+    timeStruct.tm_year = y - 1900;
+    timeStruct.tm_mon = mon - 1;
+    timeStruct.tm_mday = d;
+    timeStruct.tm_hour = h;
+    timeStruct.tm_min = min;
+    timeStruct.tm_sec = s;
+    timeStruct.tm_zone = "GMT";
+    std::time_t t = std::mktime(&timeStruct);
+    return t;
+}
+
+/*** GpxUtilities ***/
+
+std::vector<double> GpxUtilities::convertCoordinates(double lat, double lon, float ele)
+{
+    // Source: https://en.wikipedia.org/wiki/Geographic_coordinate_conversion
+    lat = lat * M_PI / 180;
+    lon = lon * M_PI / 180;
+    const double N = wgs84Major / sqrt(1 - e2 * pow(sin(abs(lat)), 2));
+    double X = (N + ele) * cos(lat) * cos(lon);
+    double Y = (N + ele) * cos(lat) * sin(lon);
+    double Z = ((N * pow(wgs84Minor, 2) / pow(wgs84Major, 2)) + ele) * sin(lat);
+    return std::vector{X, Y, Z};
+}
+
+double GpxUtilities::distance(const std::vector<double> &point1xyz, const std::vector<double> &point2xyz)
+{
+    auto deltaPoints = [](double p1, double p2) { return pow(p2 - p1, 2); };
+    double delta = 0;
+    for (int axis = 0; axis < 3; axis++)
+        delta += deltaPoints(point1xyz[axis], point2xyz[axis]);
+    return sqrt(delta);
+}
+
+double GpxUtilities::speed(std::pair<double, double> timePosPoint1, std::pair<double, double> timePosPoint2)
+{
+    double d = 0.0;
+    return d;
+}
+
+/*** Data ***/
 
 /* Read file, parse and add to _tracks */
 void Data::readFromFile(std::string &fileName)
@@ -135,4 +185,43 @@ void Data::readFromFile(std::string &fileName)
     GpxParser gpx(fileName);
     gpx.parseFile();
     gpx.getTracks(_tracks);
+}
+
+void Data::_calculateSpeedAndDistanceTrk(std::shared_ptr<Trk> &trk)
+{
+    std::vector<double> pointxyzPre(3);
+    std::vector<double> pointxyz(3);
+    double delta_s = 0;
+    std::time_t t;
+    std::time_t tPre = trk->time[0];
+    int delta_t = 0;
+
+    pointxyzPre = GpxUtilities::convertCoordinates(trk->trkpt[0].second, trk->trkpt[0].first, trk->ele[0]);
+    // trk->speed.push_back(0.0);
+    for (size_t idx = 1; idx < trk->trkpt.size(); idx++)
+    {
+        pointxyz = GpxUtilities::convertCoordinates(trk->trkpt[idx].second, trk->trkpt[idx].first, trk->ele[idx]);
+        delta_s = GpxUtilities::distance(pointxyzPre, pointxyz);
+        t = trk->time[idx];
+        delta_t = t - tPre;
+
+        trk->speed.push_back(delta_s / delta_t * 3.6);
+        trk->distanceTraveled += (delta_s / 1000);
+
+        pointxyzPre = pointxyz;
+        tPre = t;
+    }
+    trk->speed.push_back(delta_s / delta_t * 3.6); // Done so that all vectors have the same length
+}
+
+void Data::calculateSpeedAndDistanceTracks()
+{
+    // check if at least 1 track is availble
+    // if all vectors are the same length
+    // could run each track in it's thread
+
+    for (size_t trkIdx = 0; trkIdx < _tracks.size(); trkIdx++)
+    {
+        _calculateSpeedAndDistanceTrk(_tracks[trkIdx]);
+    }
 }
