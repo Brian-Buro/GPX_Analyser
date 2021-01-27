@@ -10,6 +10,7 @@ class FileManager
 {
 public:
     void addFile(std::string fileName);
+    // load data funciton
 
 private:
     std::vector<std::unique_ptr<File>> _files;

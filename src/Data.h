@@ -13,7 +13,7 @@
 struct Trk
 {
     std::vector<std::time_t> time;                // Number of sec since the epoch
-    std::vector<float> ele;                       // m above sea level
+    std::vector<int> ele;                         // m above sea level
     std::vector<std::pair<double, double>> trkpt; // lon, lat
     std::vector<float> speed;                     // m/s
     double distanceTraveled = 0;                  // km
@@ -38,7 +38,7 @@ namespace GpxUtilities
     const double wgs84Minor{6356752.314245};
     const double e2 = 1 - (pow(wgs84Minor, 2) / pow(wgs84Major, 2));
 
-    std::vector<double> convertCoordinates(double lat, double lon, float ele);
+    std::vector<double> convertCoordinates(double lat, double lon, int ele);
     double distance(const std::vector<double> &point1xyz, const std::vector<double> &point2xyz);
     double speed(std::pair<double, double> timePosPoint1, std::pair<double, double> timePosPoint2);
 }; // namespace GpxUtilities

@@ -73,11 +73,11 @@ void GpxParser::_extractTrkpt(std::shared_ptr<Trk> &trk)
 
 void GpxParser::_extractEle(std::shared_ptr<Trk> &trk)
 {
-    float ele;
+    int ele;
     std::smatch m;
     _regexExpression = ">([\\.\\d]+)<";
     if (std::regex_search(_line, m, _regexExpression))
-        ele = std::stof(m[1].str());
+        ele = std::stoi(m[1].str());
     trk->ele.push_back(ele);
 }
 
@@ -150,7 +150,7 @@ std::time_t GpxParser::parseTime(const char *time)
 
 /*** GpxUtilities ***/
 
-std::vector<double> GpxUtilities::convertCoordinates(double lat, double lon, float ele)
+std::vector<double> GpxUtilities::convertCoordinates(double lat, double lon, int ele)
 {
     // Source: https://en.wikipedia.org/wiki/Geographic_coordinate_conversion
     lat = lat * M_PI / 180;
