@@ -15,9 +15,12 @@ public:
     dataType max();
     dataType min();
 
-private:
-    std::vector<std::time_t> _time;
-    std::vector<dataType> _data;
+protected:
+    const std::vector<std::time_t> _time;
+    const std::vector<dataType> _data;
+    const float _minToSec = 60;
+    const float _secToMin = 1 / _minToSec;
+    const float _m_per_SecTokm_per_Hr = 3.6;
 };
 
 template <typename dataType>
@@ -44,12 +47,28 @@ class SpeedAnalysis : public AnalysisBase<float>
 {
 public:
     SpeedAnalysis(std::vector<std::time_t> time, std::vector<float> speed) : AnalysisBase<float>(time, speed){};
+    float stoppedTimeMin();
+    float meanMovingSpeedKmPerH();
+
+private:
+    void _calStoppedTimeSec();
+    void _calMeanMovingSpeedMeterProSec();
+    double _stoppedTime = -1;          //Unit sec
+    float _meanMovingSpeed = -1;       //Unit m/s
+    const float _minSpeedMoving = 3.6; // Below this speed the GPS is considered to be stopped.
 };
 
 class ElevationAnalysis : public AnalysisBase<int>
 {
 public:
     ElevationAnalysis(std::vector<std::time_t> time, std::vector<int> ele) : AnalysisBase<int>(time, ele){};
+    int assentInMeters();
+    int decentInMeters();
+
+private:
+    void _calVirticalTravel();
+    int _assent = -1; // Unit: meters
+    int _descent = 1; // Unit: meters
 };
 
 #endif

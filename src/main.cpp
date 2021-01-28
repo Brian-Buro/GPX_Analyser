@@ -34,8 +34,8 @@ int main()
 */
 
     std::vector<std::time_t> t{1, 2, 3, 4, 5};
-    std::vector<float> speed{0.1, 1.2, 2.5, 3.3, 2};
-    std::vector<int> ele{-1, 0, 20, 25, -20};
+    std::vector<float> speed{10, 10, 3, 20, 20};
+    std::vector<int> ele{-10, 1, -5, -5, 0};
 
     std::cout << "\nBaseAnalysis...\n";
     AnalysisBase<float> anotherBase(t, speed);
@@ -43,14 +43,18 @@ int main()
     std::cout << "Min: " << anotherBase.min() << "\n";
 
     std::cout << "\nSpeedAnalysis...\n";
-    SpeedAnalysis anotherSpeedAnaly(t, speed);
-    std::cout << "Max: " << anotherSpeedAnaly.max() << "\n";
-    std::cout << "Min: " << anotherSpeedAnaly.min() << "\n";
+    SpeedAnalysis aSpeedAnalysis(t, speed);
+    std::cout << "Max: " << aSpeedAnalysis.max() << "\n";
+    std::cout << "Min: " << aSpeedAnalysis.min() << "\n";
+    std::cout << "Stopped Time: " << aSpeedAnalysis.stoppedTimeMin() << " min\n";
+    std::cout << "Moving avg speed: " << aSpeedAnalysis.meanMovingSpeedKmPerH() << " km/hr\n";
 
     std::cout << "\nElevationAnalysis...\n";
-    ElevationAnalysis eAnalyis(t, ele);
-    std::cout << "Max: " << eAnalyis.max() << "\n";
-    std::cout << "min: " << eAnalyis.min() << "\n";
+    ElevationAnalysis anEleAnalysis(t, ele);
+    std::cout << "Max: " << anEleAnalysis.max() << "\n";
+    std::cout << "min: " << anEleAnalysis.min() << "\n";
+    std::cout << "Climb: " << anEleAnalysis.assentInMeters() << "\n";
+    std::cout << "Decs: " << anEleAnalysis.decentInMeters() << "\n";
 
     return 0;
 }
