@@ -11,7 +11,7 @@ template <typename dataType>
 class AnalysisBase
 {
 public:
-    AnalysisBase(std::vector<std::time_t> time, std::vector<dataType> data) : _time(time), _data(data){};
+    AnalysisBase(const std::vector<std::time_t> &time, const std::vector<dataType> &data) : _time(time), _data(data){};
     dataType max();
     dataType min();
 
@@ -46,7 +46,7 @@ dataType AnalysisBase<dataType>::min()
 class SpeedAnalysis : public AnalysisBase<float>
 {
 public:
-    SpeedAnalysis(std::vector<std::time_t> time, std::vector<float> speed) : AnalysisBase<float>(time, speed){};
+    SpeedAnalysis(const std::vector<std::time_t> &time, const std::vector<float> &speed) : AnalysisBase<float>(time, speed){};
     float stoppedTimeMin();
     float meanMovingSpeedKmPerH();
 
@@ -61,7 +61,7 @@ private:
 class ElevationAnalysis : public AnalysisBase<int>
 {
 public:
-    ElevationAnalysis(std::vector<std::time_t> time, std::vector<int> ele) : AnalysisBase<int>(time, ele){};
+    ElevationAnalysis(const std::vector<std::time_t> &time, const std::vector<int> &ele) : AnalysisBase<int>(time, ele){};
     int assentInMeters();
     int decentInMeters();
 
