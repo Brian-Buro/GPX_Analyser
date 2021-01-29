@@ -5,16 +5,19 @@
 #include <memory>
 #include <string>
 #include "File.h"
+#include "Data.h"
+#include "Analyses.h"
 
 class FileManager
 {
 public:
     void addFile(std::string fileName);
-    // load data funciton
+    void loadFile(int filePosition);
+    void printAnalysis(int filePosition, int trkPos);
 
 private:
     std::vector<std::unique_ptr<File>> _files;
-    // DataVector
+    std::vector<std::unique_ptr<Data>> _data;
 };
 
 #endif
