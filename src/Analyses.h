@@ -14,6 +14,7 @@ public:
     AnalysisBase(const std::vector<std::time_t> &time, const std::vector<dataType> &data) : _time(time), _data(data){};
     dataType max();
     dataType min();
+    float trackTimeSec();
 
 protected:
     const std::vector<std::time_t> _time;
@@ -28,7 +29,7 @@ dataType AnalysisBase<dataType>::AnalysisBase::max()
 {
     dataType maxValue = std::numeric_limits<dataType>::min();
     for (auto &value : _data)
-        if (value > maxValue)
+        if (value > maxValue && value < 10000)
             maxValue = value;
     return maxValue;
 }
@@ -43,6 +44,12 @@ dataType AnalysisBase<dataType>::min()
     return minValue;
 }
 
+template <typename dataType>
+float AnalysisBase<dataType>::trackTimeSec()
+{
+    return static_cast<float>(_time.back() - _time[0]);
+}
+
 class SpeedAnalysis : public AnalysisBase<float>
 {
 public:
@@ -53,9 +60,10 @@ public:
 private:
     void _calStoppedTimeSec();
     void _calMeanMovingSpeedMeterProSec();
-    double _stoppedTime = -1;          //Unit sec
-    float _meanMovingSpeed = -1;       //Unit m/s
-    const float _minSpeedMoving = 3.6; // Below this speed the GPS is considered to be stopped.
+    double _stoppedTime = -1;          // Unit sec
+    float _meanMovingSpeed = -1;       // Unit m/s
+    const float _minSpeedMoving = 0.5; // Below this speed the GPS is considered to be stopped.
+    const float _maxSpeed = 20;        // Speeds above this will be ignored. Unit m/s
 };
 
 class ElevationAnalysis : public AnalysisBase<int>

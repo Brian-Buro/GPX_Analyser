@@ -37,7 +37,7 @@ void SpeedAnalysis::_calMeanMovingSpeedMeterProSec()
     double weightedSpeedMoving = 0;
     for (size_t idx = 0; idx < _data.size() - 1; idx++)
     {
-        if (_data[idx] >= _minSpeedMoving)
+        if (_data[idx] >= _minSpeedMoving && _data[idx] < _maxSpeed)
         {
             timeStep = static_cast<double>(_time[idx + 1] - _time[idx]);
             totalTimeMoving += timeStep;
