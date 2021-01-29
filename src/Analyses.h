@@ -15,8 +15,11 @@ public:
     dataType max();
     dataType min();
     float trackTimeSec();
+    std::string trackTimeFormatted();
 
 protected:
+    void _calTrackTimeSec();
+    float _trackTimeSec = -1;
     const std::vector<std::time_t> _time;
     const std::vector<dataType> _data;
     const float _minToSec = 60;
@@ -45,9 +48,29 @@ dataType AnalysisBase<dataType>::min()
 }
 
 template <typename dataType>
+void AnalysisBase<dataType>::_calTrackTimeSec()
+{
+    _trackTimeSec = static_cast<float>(_time.back() - _time[0]);
+}
+
+template <typename dataType>
 float AnalysisBase<dataType>::trackTimeSec()
 {
-    return static_cast<float>(_time.back() - _time[0]);
+    if (_trackTimeSec == -1)
+        _calTrackTimeSec();
+
+    return _trackTimeSec;
+}
+
+template <typename dataType>
+std::string AnalysisBase<dataType>::trackTimeFormatted()
+{
+    int hr = trackTimeSec() / 3600;
+    int min = (trackTimeSec() / 60) - (hr * 60);
+    int sec = trackTimeSec() - (min * 60) - (hr * 3600);
+    char formattedTime[] = "00:00:00";
+    sprintf(formattedTime, "%2d:%2d:%2d", hr, min, sec);
+    return std::string(formattedTime);
 }
 
 class SpeedAnalysis : public AnalysisBase<float>
