@@ -13,6 +13,7 @@ public:
     bool isOK();
     void printPath();
     std::string filePath();
+    std::string fileName();
 
 private:
     fs::path _path;

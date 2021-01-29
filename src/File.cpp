@@ -32,4 +32,8 @@ std::string File::filePath()
     return _path.string();
 }
 
+std::string File::fileName()
+{
+    return _path.filename();
+}
 
