@@ -26,3 +26,10 @@ void File::printPath()
 {
     std::cout << "Path: " << _path << "\n";
 }
+
+std::string File::filePath()
+{
+    return _path.string();
+}
+
+

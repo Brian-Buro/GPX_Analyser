@@ -12,6 +12,7 @@ public:
     File(std::string fileName) : _path(fileName){};
     bool isOK();
     void printPath();
+    std::string filePath();
 
 private:
     fs::path _path;
