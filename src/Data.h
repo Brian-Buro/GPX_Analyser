@@ -23,8 +23,9 @@ struct Trk
 class Data
 {
 public:
-    void readFromFile(std::string &fileName); // Later pass the file object
+    void readFromFile(const std::string &fileName); // Later pass the file object
     void calculateSpeedAndDistanceTracks();
+    std::shared_ptr<Trk> getTrackByIndex(int trkIdx);
 
 private:
     void _calculateSpeedAndDistanceTrk(std::shared_ptr<Trk> &trk);
@@ -46,7 +47,7 @@ namespace GpxUtilities
 class GpxParser
 {
 public:
-    GpxParser(std::string &fileName);
+    GpxParser(const std::string &fileName);
     ~GpxParser();
     void parseFile(); // Later pass the file object
     void getTracks(std::vector<std::shared_ptr<Trk>> &tracks);

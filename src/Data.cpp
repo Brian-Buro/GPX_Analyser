@@ -100,18 +100,16 @@ void GpxParser::parseFile()
     {
         std::istringstream lineStream(_line);
         lineStream >> _tag;
-        std::cout << _line << "\n";
         if (_tag.compare(trkTagBegin) == 0)
         {
             _readTrack();
             std::getline(_fileStream, _line);
-            std::cout << "in parseFile: " << _line << "\n";
             break;
         }
     }
 }
 
-GpxParser::GpxParser(std::string &fileName)
+GpxParser::GpxParser(const std::string &fileName)
 {
     _fileStream = std::ifstream(fileName);
     if (!_fileStream.is_open())
@@ -180,7 +178,7 @@ double GpxUtilities::speed(std::pair<double, double> timePosPoint1, std::pair<do
 /*** Data ***/
 
 /* Read file, parse and add to _tracks */
-void Data::readFromFile(std::string &fileName)
+void Data::readFromFile(const std::string &fileName)
 {
     GpxParser gpx(fileName);
     gpx.parseFile();
@@ -224,4 +222,9 @@ void Data::calculateSpeedAndDistanceTracks()
     {
         _calculateSpeedAndDistanceTrk(_tracks[trkIdx]);
     }
+}
+
+std::shared_ptr<Trk> Data::getTrackByIndex(int trkIdx)
+{
+    return _tracks[trkIdx];
 }
