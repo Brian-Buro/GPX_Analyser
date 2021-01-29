@@ -7,12 +7,14 @@
 
 int main()
 {
-    /*
+
     FileManager fileMan;
     fileMan.addFile("../sampleData/Walchensee.gpx"); 
     fileMan.addFile("../sampleData/Walchensee2.gpx"); 
-*/
-    /*
+    fileMan.loadFile(0);
+    fileMan.printAnalysis(0,0);
+
+/*    
     Data d;
     std::string a("../sampleData/Walchensee.gpx");
     d.readFromFile(a);
@@ -32,7 +34,7 @@ int main()
     printP(p2);
     std::cout << "dist: " << dist << "\n";
 */
-
+/*
     std::vector<std::time_t> t{1, 2, 3, 4, 5};
     std::vector<float> speed{10, 10, 3, 20, 20};
     std::vector<int> ele{-10, 1, -5, -5, 0};
@@ -55,6 +57,6 @@ int main()
     std::cout << "min: " << anEleAnalysis.min() << "\n";
     std::cout << "Climb: " << anEleAnalysis.assentInMeters() << "\n";
     std::cout << "Decs: " << anEleAnalysis.decentInMeters() << "\n";
-
+*/
     return 0;
 }
