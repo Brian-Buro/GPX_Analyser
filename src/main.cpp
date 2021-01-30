@@ -49,11 +49,11 @@ void commands()
     }
 }
 
-int main(int argc, const char **argv)
+int main(int argc, char **argv)
 {
 
     std::cout << "\n** GPX Analysier **\n";
-    if (argc == 3 && std::string_view{argv[1]} == "-a")
+    if (argc == 3 && std::strcmp(argv[1], "-a") == 0)
     {
         runGpxAnalysis(argv[2]);
     }

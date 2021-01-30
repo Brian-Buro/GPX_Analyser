@@ -157,7 +157,7 @@ std::vector<double> GpxUtilities::convertCoordinates(double lat, double lon, int
     double X = (N + ele) * cos(lat) * cos(lon);
     double Y = (N + ele) * cos(lat) * sin(lon);
     double Z = ((N * pow(wgs84Minor, 2) / pow(wgs84Major, 2)) + ele) * sin(lat);
-    return std::vector{X, Y, Z};
+    return std::vector<double>{X, Y, Z};
 }
 
 double GpxUtilities::distance(const std::vector<double> &point1xyz, const std::vector<double> &point2xyz)
