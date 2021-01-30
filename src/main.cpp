@@ -7,12 +7,16 @@
 
 void printHelp()
 {
-    std::cout << "\nGPX Analysier Help\n\n";
-    std::cout << "Commands:\n";
-    std::cout << "Load file: load <..\\path\\to\\file.gpx>\n";
-    std::cout << "Analyse a loaded file: analyse file_<number>_trk<number>\n";
-    std::cout << "List loaded files: list\n";
-    std::cout << "Help: h\n";
+    std::cout << "\nGPX Analysier Help\n";
+    std::cout << "Analyse one file using an input argument:\n";
+    std::cout << "\tLunch with arguments: ./GPX_Analyser -a ../sampleData/Walchensee.gpx\n";
+    std::cout << "Or analyse multiple files using commands:\n";
+    std::cout << "\tLunch without arguments: ./GPX_Analyser\n";
+    std::cout << "\tCommands:\n";
+    std::cout << "\tAnalyse a file: a\n";
+    std::cout << "\tQuit: q\n";
+    std::cout << "\tHelp: h\n";
+    std::cout << "\n";
 }
 void runGpxAnalysis(const std::string &fName)
 {
@@ -29,13 +33,13 @@ void commands()
     std::string fName = "";
     while (1)
     {
-        std::cout << "Enter cmd: \n";
+        std::cout << "Enter cmd (h for help): \n";
         std::cin >> cmd;
         if (cmd == "q")
             return;
         else if (cmd == "h")
             printHelp();
-        else if (cmd == "f")
+        else if (cmd == "a")
         {
             std::cout << "Enter file path (without spaces): \n";
             std::cin >> fName;
@@ -48,10 +52,9 @@ void commands()
 int main(int argc, const char **argv)
 {
 
-    std::cout << "\nGPX Analysier\n\n";
-    if (argc == 3 && std::string_view{argv[1]} == "-f")
+    std::cout << "\n** GPX Analysier **\n";
+    if (argc == 3 && std::string_view{argv[1]} == "-a")
     {
-        //fileMan.addFile("../sampleData/Walchensee.gpx");
         runGpxAnalysis(argv[2]);
     }
     else if (argc == 1)
