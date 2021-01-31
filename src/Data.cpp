@@ -3,7 +3,7 @@
 #include <sstream>
 #include <stdexcept>
 
-/** Helper functions for the parser **/
+/*** GpxParser Parser ***/
 void GpxParser::_readTrack()
 {
     // A GPX file can have multipule tracks.
@@ -93,7 +93,7 @@ void GpxParser::_extractTime(std::shared_ptr<Trk> &trk)
     trk->time.push_back(time);
 }
 
-/** Main parser funtion **/
+/** Main parser function **/
 void GpxParser::parseFile()
 {
     while (std::getline(_fileStream, _line))
@@ -126,6 +126,7 @@ void GpxParser::getTracks(std::vector<std::shared_ptr<Trk>> &tracks)
 {
     tracks = _tracks;
 }
+
 std::time_t GpxParser::parseTime(const char *time)
 {
     /* 2020-04-12T12:52:18Z */
@@ -214,10 +215,7 @@ void Data::_calculateSpeedAndDistanceTrk(std::shared_ptr<Trk> &trk)
 
 void Data::calculateSpeedAndDistanceTracks()
 {
-    // check if at least 1 track is availble
-    // if all vectors are the same length
-    // could run each track in it's thread
-
+    // The speed and distance will be calculated for all tracks present
     for (size_t trkIdx = 0; trkIdx < _tracks.size(); trkIdx++)
     {
         _calculateSpeedAndDistanceTrk(_tracks[trkIdx]);

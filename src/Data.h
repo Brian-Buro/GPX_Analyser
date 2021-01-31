@@ -10,29 +10,29 @@
 #include <cmath>
 #include <ctime>
 
-struct Trk
+struct Trk // Container for all Track information
 {
     std::vector<std::time_t> time;                // Number of sec since the epoch
     std::vector<int> ele;                         // m above sea level
     std::vector<std::pair<double, double>> trkpt; // lon, lat
     std::vector<float> speed;                     // m/s
     double distanceTraveled = 0;                  // km
-    std::string name = "";
+    std::string name = "";                        // Track name
 };
 
 class Data
 {
 public:
-    void readFromFile(const std::string &fileName); // Later pass the file object
+    void readFromFile(const std::string &fileName);
     void calculateSpeedAndDistanceTracks();
     std::shared_ptr<Trk> getTrackByIndex(int trkIdx);
 
 private:
     void _calculateSpeedAndDistanceTrk(std::shared_ptr<Trk> &trk);
-    std::vector<std::shared_ptr<Trk>> _tracks;
+    std::vector<std::shared_ptr<Trk>> _tracks;  // A GPX file can contain multiple tracks, therefor a vector is used.
 };
 
-namespace GpxUtilities
+namespace GpxUtilities // Constants and functions needed to process the gpx data.
 {
     // Source: https://en.wikipedia.org/wiki/World_Geodetic_System#WGS84
     const double wgs84Major{6378137};
@@ -54,7 +54,7 @@ public:
     static std::time_t parseTime(const char *time);
 
 private:
-    // Constants
+    // XML Tags used in the GPX file.
     const std::string trkTagBegin = "<trk>";
     const std::string trkTagEnd = "</trk>";
     const std::string nameTagBegin = "<name>";
@@ -67,14 +67,12 @@ private:
     const std::string timeBegin = "<time>";
     const std::string timeEnd = "</time>";
 
-    // Variables
     std::vector<std::shared_ptr<Trk>> _tracks;
     std::ifstream _fileStream;
     std::string _line;
     std::string _tag;
     std::regex _regexExpression;
 
-    // Functions
     void _readTrack();
     void _readTrackSegment(std::shared_ptr<Trk> &trk);
     void _extractName(std::shared_ptr<Trk> &trk);

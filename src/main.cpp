@@ -7,7 +7,7 @@
 
 void printHelp()
 {
-    std::cout << "\nGPX Analysier Help\n";
+    std::cout << "\nGPX Analyser Help\n";
     std::cout << "Analyse one file using an input argument:\n";
     std::cout << "\tLunch with arguments: ./GPX_Analyser -a ../sampleData/Walchensee.gpx\n";
     std::cout << "Or analyse multiple files using commands:\n";
@@ -52,7 +52,7 @@ void commands()
 int main(int argc, char **argv)
 {
 
-    std::cout << "\n** GPX Analysier **\n";
+    std::cout << "\n** GPX Analyser **\n";
     if (argc == 3 && std::strcmp(argv[1], "-a") == 0)
     {
         runGpxAnalysis(argv[2]);

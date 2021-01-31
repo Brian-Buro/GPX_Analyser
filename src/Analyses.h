@@ -27,6 +27,8 @@ protected:
     const float _m_per_SecTokm_per_Hr = 3.6;
 };
 
+// I couldn't move AnalysisBase's member functions to the .cpp file. There were always errors.
+
 template <typename dataType>
 dataType AnalysisBase<dataType>::AnalysisBase::max()
 {
