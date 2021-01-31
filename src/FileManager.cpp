@@ -9,6 +9,11 @@ void FileManager::addFile(std::string fileName)
 
 void FileManager::loadFile(int filePosition)
 {
+    if (filePosition < _files.size() -1 )
+    {
+        std::cout << "The file wasn't found.\n";
+        return;
+    }
     std::unique_ptr<Data> newData = std::make_unique<Data>();
     newData->readFromFile(_files[filePosition]->filePath());
     newData->calculateSpeedAndDistanceTracks();
@@ -20,13 +25,13 @@ void FileManager::printAnalysis(int filePostion, int trkPos)
 
     std::cout << "\n ** Track analysis **\n";
 
-    if (filePostion > _files.size() - 1)
+    if (filePostion < _files.size() - 1)
     {
         std::cout << "Oops the file wasn't valid. Try entering it again.\n";
         return;
     }
     std::cout << "\nFile name: " << _files[filePostion]->fileName() << "\n";
-    if (trkPos > _data.size() - 1)
+    if (trkPos < _data.size() - 1)
     {
         std::cout << "Oops that track wasn't valid. Try reloading it.\n";
         return;
